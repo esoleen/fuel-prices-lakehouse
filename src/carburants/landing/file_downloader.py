@@ -14,5 +14,8 @@ def download_csv_file(url, path):
     with gzip.GzipFile(fileobj=response) as gz_in, open(file, "wb") as f_out:
         shutil.copyfileobj(gz_in, f_out)
 
+def read_csv_file(path, df_schema, delimiter = ";"):
+    return spark.read.csv(path,schema = df_schema,header = True)
+
 def download_json_file():
     pass
