@@ -5,7 +5,7 @@ import os
 import urllib.request
 
 
-# download file from URL:https://www.data.gouv.fr/datasets/prix-des-carburants-en-france-flux-instantane-v2-amelioree
+# download file from URL:https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/exports/csv?use_labels=true
 def download_csv_file(url, path):
     os.makedirs(path, exist_ok=True)
     file_path = f"{path}/prix-des-carburants-en-france-flux-instantane-v2.csv"
@@ -15,8 +15,8 @@ def download_csv_file(url, path):
         shutil.copyfileobj(gz_in, f_out)
     return file_path
 
-def read_csv_file(file, df_schema, delimiter = ";"):
-    return spark.read.csv(file,schema = df_schema,header = True)
+def read_csv_file(file):
+    return spark.read.csv(file, inferSchema = True, header = True, sep = ";")
 
 def download_json_file():
     pass
