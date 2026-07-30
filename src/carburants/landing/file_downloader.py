@@ -12,11 +12,21 @@ def download_csv_file(url, path):
     req = urllib.request.Request(url, headers={"Accept-Encoding": "identity"})
     response = urllib.request.urlopen(req)
     with gzip.GzipFile(fileobj=response) as gz_in, open(file_path, "wb") as f_out:
-        shutil.copyfileobj(gz_in, f_out)
+        shutil.copyfileobj(response, f_out)
     return file_path
 
-def read_csv_file(file):
-    return spark.read.csv(file, inferSchema = True, header = True, sep = ";")
+def read_csv_file(file, spark):
+    return spark\
+    .read\
+    .option("header", "true")\
+    .option("inferSchema","true")\
+    .option("delimiter", ";")\
+    .option("mode", "PERMISSIVE")\
+    .option("escape", '"')\
+    .option("quote", '"')\
+    .option("columnNameOfCorruptRecord", "_corrupt_record")\
+    .csv(file)
+
 
 def download_json_file():
     pass
