@@ -18,24 +18,27 @@ Ce projet transforme ce flux brut en un modèle de données prêt pour l'analyse
 ## 📁 Architecture du projet
 
 ```
-project/
-
-│
+fuel-prices-lakehouse/
 ├── conf/
-├── notebooks/
+│   ├── dev.yml
+│   └── prod.yaml
+├── fixtures/                       # Jeux de données pour les tests
+├── resources/                      # Configuration des jobs et pipelines (DAB)
+│   ├── 001_landing.job.yml
+│   └── carburant_etl.pipeline.yml
 ├── src/
-│      ├── carburants/
-│           ├── landing
-│                 ├── file_downloader.py
-│                 ├── job_init.py
-│           ├── bronze
-│                
-│           ├── silver
-│                
-│           ├── gold                
-│
+│   └── carburants/
+│       ├── __init__.py
+│       ├── explorations/
+│       │   └── exploration.ipynb
+│       └── transformations/
+│           ├── file_downloader.py
+│           └── main.py
 ├── tests/
-├── requirements.txt
+│   ├── unit/
+│   ├── conftest.py
+│   └── sample_taxis_test.py
 ├── databricks.yml
+├── pyproject.toml
 ├── README.md
 └── .gitignore
