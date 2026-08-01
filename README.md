@@ -25,14 +25,14 @@ project/
 ├── notebooks/
 ├── src/
 │      ├── carburants/
-            ├── landing
-                  ├── file_downloader.py
+│           ├── landing
+│                 ├── file_downloader.py
 │                 ├── job_init.py
 │           ├── bronze
-                 
-            ├── silver
-                 
-            ├── gold                
+│                
+│           ├── silver
+│                
+│           ├── gold                
 │
 ├── tests/
 ├── requirements.txt
