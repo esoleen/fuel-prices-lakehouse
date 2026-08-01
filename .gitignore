@@ -8,3 +8,10 @@ scratch/**
 !scratch/README.md
 **/explorations/**
 **/!explorations/README.md
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.env
+*.env
+secrets.*
+.databrickscfg
