@@ -7,11 +7,11 @@ resources:
       catalog: ${var.catalog}
       schema: ${var.schema}
       serverless: true
-      root_path: "../src/fuel_prices_lakehouse_etl"
+      root_path: "../src/carburants"
 
       libraries:
         - glob:
-            include: ../src/fuel_prices_lakehouse_etl/transformations/**
+            include: ../src/carburants/transformations/**
 
       environment:
         dependencies:

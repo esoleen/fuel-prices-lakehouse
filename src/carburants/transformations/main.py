@@ -1,6 +1,5 @@
 import argparse
 from databricks.sdk.runtime import spark
-from fuel_prices_lakehouse import taxis
 
 
 def main():
