@@ -15,10 +15,11 @@ def download_csv_file(url, path):
         shutil.copyfileobj(response, f_out)
     return file_path
 
-def read_csv_file(file, spark):
+def read_csv_file(file, spark, schema):
     return spark\
     .read\
     .option("header", "true")\
+    .schema(schema)\
     .option("inferSchema","true")\
     .option("delimiter", ";")\
     .option("mode", "PERMISSIVE")\
