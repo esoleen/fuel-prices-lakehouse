@@ -15,6 +15,16 @@ Ce projet transforme ce flux brut en un modèle de données prêt pour l'analyse
 ### Source
 - [https://data.economie.gouv.fr/](https://data.economie.gouv.fr/) - Prix des carburants en France, flux instantané V2
 
+## 🏗️ Architecture Médaillon
+
+![Architecture Médaillon](docs/fuel_prices_medaillon_architecture.jpg)
+
+Le pipeline suit une architecture en médaillon sur 4 couches Delta Lake :
+- **Landing** : dépôt brut du flux `Prix-des-carburants-en-france-flux-instantane-v2` tel que reçu de data.economie.gouv.fr, éclaté en un jeu de tables *raw* (dimensions carburant, géo, service, station et faits prix/rupture).
+- **Bronze** : ingestion historisée des tables raw (`brze_*`) avec ajout d'une colonne `date_ingestion` pour tracer chaque chargement.
+- **Silver** : nettoyage et fiabilisation des données (`silver_*`) - déduplication par clé métier, nettoyage des valeurs, application des règles de qualité et d'intégrité référentielle (RG).
+- **Gold** : agrégats prêts pour l'analyse (`agg_*`) - prix moyen par département/jour, évolution des prix au niveau national/départemental, taux de rupture par région.
+
 ## 📁 Architecture du projet
 
 ```
@@ -22,20 +32,25 @@ fuel-prices-lakehouse/
 ├── conf/
 │   ├── dev.yml
 │   └── prod.yaml
+├── docs/
+│   ├── fuel_price_architecture.drawio
+│   └── fuel_prices_medaillon_architecture.jpg
 ├── fixtures/                       # Jeux de données pour les tests
 ├── resources/                      # Configuration des jobs et pipelines (DAB)
-│   ├── 001_landing.job.yml
+│   ├── carburant.job.yml
 │   └── carburant_etl.pipeline.yml
 ├── src/
 │   └── carburants/
 │       ├── __init__.py
 │       ├── explorations/
-│       │   └── exploration.ipynb
+│       │   ├── 01_Landing.ipynb
+│       │   ├── 02_Bronze.ipynb
+│       │   └── 03_Silver.ipynb
 │       └── transformations/
+│           ├── 00_data_quality.ipynb
 │           ├── file_downloader.py
 │           └── main.py
 ├── tests/
-│   ├── unit/
 │   ├── conftest.py
 │   └── sample_taxis_test.py
 ├── databricks.yml
