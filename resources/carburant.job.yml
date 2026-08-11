@@ -38,8 +38,8 @@ resources:
             query:
               query_id: 39dbccd4-d5db-46c3-8b81-f31befbaca26
           depends_on: 
-            - task_key: 02_load_silver
-        
+          - task_key: 02_load_silver
+
         - task_key: agg_evolution_prix
           sql_task:
             warehouse_id: b305b486691336df
@@ -68,7 +68,4 @@ resources:
         - environment_key: default
           spec:
             environment_version: "4"
-            dependencies:
-              # Installe le projet en editable pour que 'src.carburants' soit importable
-              # sans bricolage sys.path, quel que soit le cwd du notebook task.
-              - --editable ${workspace.file_path}
+

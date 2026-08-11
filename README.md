@@ -70,38 +70,6 @@ fuel-prices-lakehouse/
 
 ## ⚙️ Installation
 
-Le projet est packagé via **`pyproject.toml`** (standard Python, backend [hatchling](https://hatch.pypa.io/)), qui décrit :
-- **`[project]`** : le nom du package, sa version, ses dépendances runtime et la version de Python requise.
-- **`[dependency-groups] dev`** : les dépendances de développement/test (`pytest`, `ruff`, `databricks-connect`, `ipykernel`...), non embarquées en production.
-- **`[tool.hatch.build.targets.wheel] packages = ["src/carburants"]`** : indique explicitement à hatchling où se trouve le code source à packager (`src/carburants`). Sans cette ligne, l'installation échoue car le nom du dossier (`carburants`) ne correspond pas au nom du projet (`fuel_prices_lakehouse`).
-- **`[build-system]`** : l'outil utilisé pour construire le package (`hatchling`).
-
-C'est ce fichier qui rend le module `src/carburants` importable (`from carburants.fuel_price_utils import ...`) dans les notebooks et dans le job Databricks (`resources/carburant.job.yml`, `resources/carburant_etl.pipeline.yml`), qui installent le projet en editable via `--editable ${workspace.file_path}`.
-
-### Pré-requis
-- Python ≥ 3.10, < 3.13
-- [Databricks CLI](https://docs.databricks.com/dev-tools/cli/index.html) configuré (`databricks auth login`) pour déployer/exécuter le bundle
-- (optionnel mais recommandé) [uv](https://docs.astral.sh/uv/) pour la gestion d'environnement
-
-### Installer le projet en local
-
-Avec `uv` (recommandé) :
-```bash
-uv sync                 # installe le projet + les dépendances dev, en editable
-```
-
-Ou avec `pip` :
-```bash
-python -m venv .venv
-.venv\Scripts\activate           # Windows
-# source .venv/bin/activate      # macOS/Linux
-pip install -e . --group dev     # installe le projet en editable + le groupe de dépendances dev (pip >= 25.1)
-```
-
-Vérifier que l'installation fonctionne :
-```bash
-python -c "from carburants.fuel_price_utils import download_csv_file, read_csv_file"
-```
 
 ### Déployer et exécuter le pipeline sur Databricks
 ```bash
