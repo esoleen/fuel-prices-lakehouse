@@ -19,11 +19,12 @@ Ce projet transforme ce flux brut en un modèle de données prêt pour l'analyse
 
 ![Architecture Médaillon](docs/fuel_prices_medaillon_architecture.png)
 
-Le pipeline suit une architecture en médaillon sur 4 couches Delta Lake :
-- **Landing** : dépôt brut du flux `Prix-des-carburants-en-france-flux-instantane-v2` tel que reçu de data.economie.gouv.fr, éclaté en un jeu de tables *raw* (dimensions carburant, géo, service, station et faits prix/rupture).
-- **Bronze** : ingestion historisée des tables raw (`brze_*`) avec ajout d'une colonne `date_ingestion` pour tracer chaque chargement.
-- **Silver** : nettoyage et fiabilisation des données (`silver_*`) - déduplication par clé métier, nettoyage des valeurs, application des règles de qualité et d'intégrité référentielle (RG).
-- **Gold** : agrégats prêts pour l'analyse (`agg_*`) - prix moyen par département/jour, évolution des prix au niveau national/départemental, taux de rupture par région.
+Le pipeline suit une architecture en médaillon sur 3 couches Delta Lake, orchestrées par un job Databricks (`resources/carburant.job.yml`) :
+- **Bronze** (`fuel_price_etl/notebooks/01_Bronze`) : ingestion historisée des tables brutes (`brze_*` : dim_carburant, dim_geo, dim_station, fait_prix, fait_rupture) avec ajout d'une colonne `date_ingestion` pour tracer chaque chargement.
+- **Silver** (`fuel_price_etl/notebooks/02_Silver`) : nettoyage et fiabilisation des données (`slv_*`) - déduplication par clé métier, désimbrication des colonnes `service`, application des règles de qualité et d'intégrité référentielle (ex. rattachement des stations à un département existant dans `dim_geo`).
+- **Gold** (`fuel_price_etl/notebooks/03_Gold`) : requêtes SQL d'agrégation (`agg_*.dbquery.ipynb`) exécutées en parallèle après le Silver - prix moyen par département, évolution des prix au niveau national, classement des stations les moins chères, taux de rupture par région.
+
+Le module `src/carburants` (packagé via `pyproject.toml`) fournit les utilitaires Python partagés (`fuel_price_utils.py`), le notebook de contrôle qualité (`00_data_quality.ipynb`) et le point d'entrée `main.py`, montés dans le pipeline DAB (`resources/carburant_etl.pipeline.yml`).
 
 ## 📁 Architecture du projet
 
@@ -33,26 +34,34 @@ fuel-prices-lakehouse/
 │   ├── dev.yml
 │   └── prod.yaml
 ├── docs/
-│   ├── fuel_price_architecture.drawio
-│   └── fuel_prices_medaillon_architecture.jpg
+│   ├── fuel_prices_medaillon_architecture.drawio
+│   └── fuel_prices_medaillon_architecture.png
 ├── fixtures/                       # Jeux de données pour les tests
+├── fuel_price_etl/
+│   ├── dlt/
+│   └── notebooks/
+│       ├── 01_Bronze/
+│       │   └── 01_bronze_fuel_price.ipynb
+│       ├── 02_Silver/
+│       │   └── 02_silver_fuel_price.ipynb
+│       └── 03_Gold/
+│           ├── agg_classement_stations_moins_cheres.dbquery.ipynb
+│           ├── agg_evolution_prix_national.dbquery.ipynb
+│           ├── agg_prix_moyen_par_departement.dbquery.ipynb
+│           └── agg_taux_rupture_par_region.dbquery.ipynb
 ├── resources/                      # Configuration des jobs et pipelines (DAB)
 │   ├── carburant.job.yml
 │   └── carburant_etl.pipeline.yml
 ├── src/
 │   └── carburants/
 │       ├── __init__.py
-│       ├── explorations/
-│       │   ├── 01_Landing.ipynb
-│       │   ├── 02_Bronze.ipynb
-│       │   └── 03_Silver.ipynb
-│       └── transformations/
-│           ├── 00_data_quality.ipynb
-│           ├── file_downloader.py
-│           └── main.py
+│       ├── 00_data_quality.ipynb
+│       ├── fuel_price_utils.py
+│       └── main.py
 ├── tests/
 │   ├── conftest.py
-│   └── sample_taxis_test.py
+│   ├── sample_taxis_test.py
+│   └── unit/
 ├── databricks.yml
 ├── pyproject.toml
 ├── README.md
