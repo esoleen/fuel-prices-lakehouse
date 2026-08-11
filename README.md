@@ -7,7 +7,7 @@ Ce projet transforme ce flux brut en un modèle de données prêt pour l'analyse
 - Ingérer le flux brut publié par [https://data.economie.gouv.fr/](https://data.economie.gouv.fr/explore/assets/prix-des-carburants-en-france-flux-instantane-v2/) (téléchargement HTTPS, décompression gzip)
 - Nettoyer et fiabiliser les données  (gestion des lignes corrompues, encodage, séparateurs)
 - Désimbriquer les structures JSON contenues dans les colonnes CSV(services, prix)
-- Modéliser les données en schéma en étoille (FAIT_PRIX, FAIT_RUPTURE, DIM_STATION, DIM_CARBURANT, DIM_GEO)
+- Modéliser les données en schéma en étoille (**FAIT_PRIX**, **FAIT_RUPTURE**, **DIM_STATION, DIM_CARBURANT**, **DIM_GEO**)
 - Gouverner les accès et isoler les environnements dev/prod (Unity Catalog)
 - Industrialiser le pipeline (modules python testables, orchestration via DAB-Databricks Asset Bundles, CI/CD)
 
