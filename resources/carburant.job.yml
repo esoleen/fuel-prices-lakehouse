@@ -24,13 +24,13 @@ resources:
       tasks:
         - task_key: 001_load_landing
           notebook_task:
-            notebook_path: ../src/carburants/explorations/01_Landing.ipynb
+            notebook_path: ../fuel_price_etl/notebooks/01_Landing.ipynb
 
         - task_key: 002_load_bronze
           depends_on:
             - task_key: 001_load_landing
           notebook_task:
-            notebook_path: ../src/carburants/explorations/02_Bronze.ipynb
+            notebook_path: ../fuel_price_etl/notebooks/02_Bronze.ipynb
 
       environments:
         - environment_key: default
