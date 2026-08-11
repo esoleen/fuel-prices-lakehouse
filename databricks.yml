@@ -25,7 +25,7 @@ targets:
     workspace:
       host: https://dbc-6b507e8d-b0ee.cloud.databricks.com
     variables:
-      catalog: kyc
+      catalog: fuel_price_dev
       schema: ${workspace.current_user.short_name}
   prod:
     mode: production
