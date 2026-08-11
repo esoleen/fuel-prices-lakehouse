@@ -68,3 +68,7 @@ resources:
         - environment_key: default
           spec:
             environment_version: "4"
+            dependencies:
+              # Installe le projet en editable pour que 'src.carburants' soit importable
+              # sans bricolage sys.path, quel que soit le cwd du notebook task.
+              - --editable ${workspace.file_path}

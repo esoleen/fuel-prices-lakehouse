@@ -23,6 +23,9 @@ dev = [
 [project.scripts]
 main = "fuel_prices_lakehouse.main:main"
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/carburants"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
