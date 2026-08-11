@@ -17,7 +17,7 @@ Ce projet transforme ce flux brut en un modèle de données prêt pour l'analyse
 
 ## 🏗️ Architecture Médaillon
 
-![Architecture Médaillon](docs/fuel_prices_medaillon_architecture.jpg)
+![Architecture Médaillon](docs/fuel_prices_medaillon_architecture.png)
 
 Le pipeline suit une architecture en médaillon sur 4 couches Delta Lake :
 - **Landing** : dépôt brut du flux `Prix-des-carburants-en-france-flux-instantane-v2` tel que reçu de data.economie.gouv.fr, éclaté en un jeu de tables *raw* (dimensions carburant, géo, service, station et faits prix/rupture).
