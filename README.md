@@ -17,7 +17,7 @@ Ce projet transforme ce flux brut en un modèle de données prêt pour l'analyse
 
 ## 🏗️ Architecture Médaillon
 
-![Architecture Médaillon](docs/fuel_prices_medaillon_architecture.png)
+![Architecture Médaillon](docs/fuel_prices_medaillon_architecture81.png)
 
 Le pipeline suit une architecture en médaillon sur 3 couches Delta Lake, orchestrées par un job Databricks (`resources/carburant.job.yml`) :
 - **Bronze** (`fuel_price_etl/notebooks/01_Bronze`) : ingestion historisée des tables brutes (`brze_*` : dim_carburant, dim_geo, dim_station, fait_prix, fait_rupture) avec ajout d'une colonne `date_ingestion` pour tracer chaque chargement.
@@ -36,7 +36,7 @@ fuel-prices-lakehouse/
 ├── docs/
 │   ├── fuel_prices_medaillon_architecture.drawio
 │   └── fuel_prices_medaillon_architecture.png
-├── fixtures/                       # Jeux de données pour les tests
+├── fixtures/                       
 ├── fuel_price_etl/
 │   ├── dlt/
 │   └── notebooks/
