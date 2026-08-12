@@ -26,3 +26,11 @@ jobs:
 
       - name: 'Déploiement du bundle sur dev'
         run: databricks bundle deploy
+        
+      - name: 'Déploiement du bundle sur dev'
+        run: |
+          databricks bundle deploy
+          echo "### ✅ Déploiement réussi sur **dev**" >> $GITHUB_STEP_SUMMARY
+          echo "- Auteur : **${{ github.actor }}**" >> $GITHUB_STEP_SUMMARY
+          echo "- Bundle : \`fuel_prices_lakehouse\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit : \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
