@@ -22,7 +22,7 @@ Ce projet transforme ce flux brut en un modèle de données prêt pour l'analyse
 Le pipeline suit une architecture en médaillon sur 3 couches Delta Lake, orchestrées par un job Databricks (`resources/carburant.job.yml`) :
 - **Bronze** (`fuel_price_etl/notebooks/01_Bronze`) : ingestion historisée des tables brutes (`brze_*` : dim_carburant, dim_geo, dim_station, fait_prix, fait_rupture) avec ajout d'une colonne `date_ingestion` pour tracer chaque chargement.
 - **Silver** (`fuel_price_etl/notebooks/02_Silver`) : nettoyage et fiabilisation des données (`slv_*`) - déduplication par clé métier, désimbrication des colonnes `services`, application des règles de qualité et d'intégrité référentielle (ex. rattachement des stations à un département existant dans `dim_geo`).
-- **Gold** (`fuel_price_etl/notebooks/03_Gold`) : requêtes SQL d'agrégation (`agg_*.dbquery.ipynb`) exécutées en parallèle après le Silver - prix moyen par département, évolution des prix au niveau national, classement des stations les moins chères, taux de rupture par région.
+- **Gold** (`fuel_price_etl/sql/03_Gold`) : requêtes SQL d'agrégation (`agg_*.dbquery.ipynb`) exécutées en parallèle après le Silver - prix moyen par département, évolution des prix au niveau national, classement des stations les moins chères, taux de rupture par région.
 
 Le module `src/carburants` (packagé via `pyproject.toml`) fournit les utilitaires Python partagés (`fuel_price_utils.py`), le notebook de contrôle qualité (`00_data_quality.ipynb`) et le point d'entrée `main.py`, montés dans le pipeline DAB (`resources/carburant_etl.pipeline.yml`).
 
@@ -57,16 +57,17 @@ fuel-prices-lakehouse/
 ├── fuel_price_etl/
 │   ├── dlt/
 │   └── notebooks/
-│       ├── 01_Bronze/
-│       │   └── 01_bronze_fuel_price.ipynb
-│       ├── 02_Silver/
-│       │   └── 02_silver_fuel_price.ipynb
-│       └── 03_Gold/
-│           ├── agg_classement_stations_moins_cheres.dbquery.ipynb
-│           ├── agg_evolution_prix_national.dbquery.ipynb
-│           ├── agg_prix_moyen_par_departement.dbquery.ipynb
-│           └── agg_taux_rupture_par_region.dbquery.ipynb
-├── resources/                      # Configuration des jobs et pipelines (DAB)
+│   └──    ├── 01_Bronze/
+│   │      │   └── 01_bronze_fuel_price.ipynb
+│   │      ├── 02_Silver/
+│   │      │   └── 02_silver_fuel_price.ipynb         
+│   └── sql/
+│          ├──  03_Gold/
+│          │      ├── agg_classement_stations_moins_cheres.dbquery.ipynb
+│          │      ├── agg_evolution_prix_national.dbquery.ipynb
+│          │      ├── agg_prix_moyen_par_departement.dbquery.ipynb
+│          │      └── agg_taux_rupture_par_region.dbquery.ipynb
+├── resources/      
 │   ├── carburant.job.yml
 │   └── carburant_etl.pipeline.yml
 ├── src/
