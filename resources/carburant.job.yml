@@ -31,6 +31,14 @@ resources:
             - task_key: 01_load_bronze
           notebook_task:
             notebook_path: ../fuel_price_etl/notebooks/02_Silver/02_silver_fuel_price.ipynb
+
+        - task_key: init
+          sql_task:
+            warehouse_id: b305b486691336df
+            query:
+              query_id: 6619aae3-466c-484d-b946-a7ef17ac4d94
+          depends_on: 
+          - task_key: 02_load_silver
   
         - task_key: agg_prix_moyen
           sql_task:
@@ -38,7 +46,7 @@ resources:
             query:
               query_id: 39dbccd4-d5db-46c3-8b81-f31befbaca26
           depends_on: 
-          - task_key: 02_load_silver
+          - task_key: init
 
         - task_key: agg_evolution_prix
           sql_task:
@@ -46,7 +54,7 @@ resources:
             query:
               query_id: 73e84b58-6027-4657-8874-853506ce5850
           depends_on: 
-            - task_key: 02_load_silver
+            - task_key: init
 
         - task_key: agg_classement_stations
           sql_task:
@@ -54,7 +62,7 @@ resources:
             query:
               query_id: fd90b79b-79bd-48c8-821d-e748e8edc64c
           depends_on: 
-            - task_key: 02_load_silver
+            - task_key: init
       
         - task_key: agg_taux_rupture
           sql_task:
@@ -62,7 +70,7 @@ resources:
             query:
               query_id: ab0c1ce0-52fe-45b9-9ad8-79d2a78f9610
           depends_on: 
-            - task_key: 02_load_silver
+            - task_key: init
 
       environments:
         - environment_key: default
