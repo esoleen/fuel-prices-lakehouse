@@ -13,7 +13,7 @@ Ce projet transforme ce flux brut en un modèle de données prêt pour l'analyse
 
 ## Dataset
 ### Source
-- [https://data.economie.gouv.fr/](https://data.economie.gouv.fr/) - Prix des carburants en France, flux instantané V2
+- [https://data.economie.gouv.fr/](https://data.economie.gouv.fr/) - Prix des carburants en France, flux instantané V2.
 
 ## 🏗️ Architecture Médaillon
 
