@@ -102,6 +102,5 @@ Ce projet reflète surtout ma façon de travailler sur un cas réel, en autonomi
 
 **Autonomie** - Projet mené seul, de bout en bout : identification de la source, diagnostic des problèmes de format à chaque étape (gzip mal décompressé, encodage, JSON imbriqué), mise en place de l'architecture medallion, industrialisation via Databricks Asset Bundles et GitHub Actions.
 
-**Esprit critique** - Plusieurs requêtes SQL et transformations PySpark contenaient des bugs silencieux (agrégations fausses malgré une exécution sans erreur, jointures dupliquant des lignes, fenêtres mal partitionnées) - les identifier a demandé de questionner systématiquement *pourquoi* un résultat semblait correct, pas seulement *si* le code s'exécutait.
 
 **Communication** - La structure de ce README (contexte métier avant le détail technique, schémas d'architecture, mapping compétences) reflète ma volonté de rendre un projet technique compréhensible par des profils différents, du tech lead au recruteur.
