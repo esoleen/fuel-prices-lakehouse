@@ -1,5 +1,5 @@
 name: 'Dev deployment'
-run-name: 'Deploy to dev databricks environment'
+run-name: 'Deploy to dev by ${{ github.actor }}'
 
 on:
   push:
@@ -12,10 +12,17 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_BUNDLE_ENV: dev
     steps:
-      - uses: actions/checkout@v4
-      - uses: databricks/setup-cli@main
+      - name: 'Checkout du code'
+        uses: actions/checkout@v4
 
-      - run: databricks bundle validate
-      - run: databricks bundle deploy
+      - name: 'Installation du CLI Databricks'
+        uses: databricks/setup-cli@main
+
+      - name: 'Validation du bundle'
+        run: databricks bundle validate
+
+      - name: 'Déploiement du bundle sur dev'
+        run: databricks bundle deploy
