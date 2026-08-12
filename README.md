@@ -26,6 +26,12 @@ Le pipeline suit une architecture en médaillon sur 3 couches Delta Lake, orches
 
 Le module `src/carburants` (packagé via `pyproject.toml`) fournit les utilitaires Python partagés (`fuel_price_utils.py`), le notebook de contrôle qualité (`00_data_quality.ipynb`) et le point d'entrée `main.py`, montés dans le pipeline DAB (`resources/carburant_etl.pipeline.yml`).
 
+## ✅ Résultat d'exécution du pipeline
+
+![Exécution du job carburant](docs/carburant_run.png)
+
+Le job `carburant` orchestre l'ensemble des étapes sur des entrepôts Serverless : chargement Bronze (`01_load_bronze`), chargement Silver (`02_load_silver`), puis les 4 agrégations Gold en parallèle (`agg_classement_stations`, `agg_evolution_prix`, `agg_prix_moyen`, `agg_taux_rupture`).
+
 ## 📁 Architecture du projet
 
 ```
