@@ -1,19 +1,21 @@
 name: 'Dev deployment'
-run-name: 'Deploy to dev databricks environnement'
-concurrency: 1
+run-name: 'Deploy to dev databricks environment'
+
 on:
   push:
     branches:
       - 'dev'
+
 jobs:
   deploy:
     name: 'carburant'
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     env:
       DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_BUNDLE_ENV: dev
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: databricks/setup-cli@main
 
       - run: databricks bundle validate
