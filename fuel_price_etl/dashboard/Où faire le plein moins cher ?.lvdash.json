@@ -1,0 +1,229 @@
+{
+  "datasets": [
+    {
+      "name": "e1efb1db",
+      "displayName": "agg_classement_stations_moins_cheres",
+      "config": {
+        "version": "1.1",
+        "source": "fuel_price_dev.gold.agg_classement_stations_moins_cheres",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "82b39806",
+      "displayName": "agg_prix_moyen_par_departement_jour",
+      "config": {
+        "version": "1.1",
+        "source": "fuel_price_dev.gold.agg_prix_moyen_par_departement_jour",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ec8c3616",
+      "displayName": "agg_taux_rupture_par_region",
+      "config": {
+        "version": "1.1",
+        "source": "fuel_price_dev.gold.agg_taux_rupture_par_region",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cf105744",
+      "displayName": "agg_evolution_prix_national",
+      "config": {
+        "version": "1.1",
+        "source": "fuel_price_dev.gold.agg_evolution_prix_national",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    }
+  ],
+  "relationshipGraphs": [
+    {
+      "sources": [
+        {
+          "name": "agg_classement_stations_moins_cheres",
+          "datasetName": "e1efb1db"
+        },
+        {
+          "name": "agg_prix_moyen_par_departement_jour",
+          "datasetName": "82b39806"
+        },
+        {
+          "name": "agg_taux_rupture_par_region",
+          "datasetName": "ec8c3616"
+        },
+        {
+          "name": "agg_evolution_prix_national",
+          "datasetName": "cf105744"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "1dee8fb4",
+      "displayName": "Top 5 stations les moins chères(E85)",
+      "layout": [
+        {
+          "widget": {
+            "name": "85c6f033",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "agg_classement_stations_moins_cheres__prix",
+                      "expression": "`agg_classement_stations_moins_cheres`.`prix`"
+                    },
+                    {
+                      "name": "agg_classement_stations_moins_cheres__station_id",
+                      "expression": "`agg_classement_stations_moins_cheres`.`station_id`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`agg_classement_stations_moins_cheres`.`departement` IN ('Paris')"
+                    },
+                    {
+                      "expression": "`agg_classement_stations_moins_cheres`.`carburant` IN ('E85')"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true
+              },
+              "mark": {
+                "colors": [
+                  "#D37118",
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "agg_classement_stations_moins_cheres__prix",
+                  "displayName": "prix des carburants",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "agg_classement_stations_moins_cheres__station_id",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 5,
+            "height": 4
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
