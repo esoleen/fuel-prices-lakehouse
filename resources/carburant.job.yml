@@ -60,7 +60,7 @@ resources:
           depends_on: 
             - task_key: 02_load_silver
 
-        - task_key: ou_faire_le_plein
+        - task_key: suivi_national_des_prix_carburants
           dashboard_task:
             dashboard_id: 01f196e9597718f58ae8a8a2e990d4d4
           depends_on:
