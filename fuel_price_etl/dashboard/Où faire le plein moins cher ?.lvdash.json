@@ -110,23 +110,191 @@
   "pages": [
     {
       "name": "1dee8fb4",
-      "displayName": "Top 5 stations les moins chères(E85)",
+      "displayName": "Indicateur comparatif carburant",
       "layout": [
         {
           "widget": {
-            "name": "85c6f033",
+            "name": "prix",
             "queries": [
               {
                 "name": "main_query",
                 "query": {
                   "fields": [
                     {
+                      "name": "monthly(agg_prix_moyen_par_departement_jour__date)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `agg_prix_moyen_par_departement_jour`.`date`)"
+                    },
+                    {
+                      "name": "agg_prix_moyen_par_departement_jour__prix_moyen",
+                      "expression": "`agg_prix_moyen_par_departement_jour`.`prix_moyen`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`agg_prix_moyen_par_departement_jour`.`nom` IN ('E10')"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"MONTH\", `agg_prix_moyen_par_departement_jour`.`date`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Prix moyen national E10"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "agg_prix_moyen_par_departement_jour__prix_moyen"
+                },
+                "period": {
+                  "fieldName": "monthly(agg_prix_moyen_par_departement_jour__date)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "t",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "monthly(agg_taux_rupture_par_region__date)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `agg_taux_rupture_par_region`.`date`)"
+                    },
+                    {
+                      "name": "agg_taux_rupture_par_region__taux_rupture",
+                      "expression": "`agg_taux_rupture_par_region`.`taux_rupture`"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"MONTH\", `agg_taux_rupture_par_region`.`date`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Taux de rupture national"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "agg_taux_rupture_par_region__taux_rupture",
+                  "style": {
+                    "rules": [
+                      {
+                        "condition": {
+                          "operator": ">="
+                        },
+                        "color": "#00A972"
+                      }
+                    ]
+                  }
+                },
+                "period": {
+                  "fieldName": "monthly(agg_taux_rupture_par_region__date)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 0,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "nombre",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "agg_taux_rupture_par_region__nb_stations_total",
+                      "expression": "`agg_taux_rupture_par_region`.`nb_stations_total`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Nombre de stations actives"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "agg_taux_rupture_par_region__nb_stations_total"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "top",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "agg_classement_stations_moins_cheres__carburant",
+                      "expression": "`agg_classement_stations_moins_cheres`.`carburant`"
+                    },
+                    {
                       "name": "agg_classement_stations_moins_cheres__prix",
                       "expression": "`agg_classement_stations_moins_cheres`.`prix`"
                     },
                     {
-                      "name": "agg_classement_stations_moins_cheres__station_id",
-                      "expression": "`agg_classement_stations_moins_cheres`.`station_id`"
+                      "name": "agg_classement_stations_moins_cheres__adresse_station",
+                      "expression": "`agg_classement_stations_moins_cheres`.`adresse_station`"
                     }
                   ],
                   "filters": [
@@ -134,7 +302,7 @@
                       "expression": "`agg_classement_stations_moins_cheres`.`departement` IN ('Paris')"
                     },
                     {
-                      "expression": "`agg_classement_stations_moins_cheres`.`carburant` IN ('E85')"
+                      "expression": "`agg_classement_stations_moins_cheres`.`carburant` IN (`agg_classement_stations_moins_cheres`.`carburant`) OR TRUE"
                     }
                   ],
                   "disaggregated": true
@@ -144,60 +312,28 @@
             "spec": {
               "version": 3,
               "frame": {
-                "showTitle": true
-              },
-              "mark": {
-                "colors": [
-                  "#D37118",
-                  {
-                    "themeColorType": "visualizationColors",
-                    "position": 2
-                  },
-                  {
-                    "themeColorType": "visualizationColors",
-                    "position": 3
-                  },
-                  {
-                    "themeColorType": "visualizationColors",
-                    "position": 4
-                  },
-                  {
-                    "themeColorType": "visualizationColors",
-                    "position": 5
-                  },
-                  {
-                    "themeColorType": "visualizationColors",
-                    "position": 6
-                  },
-                  {
-                    "themeColorType": "visualizationColors",
-                    "position": 7
-                  },
-                  {
-                    "themeColorType": "visualizationColors",
-                    "position": 8
-                  },
-                  {
-                    "themeColorType": "visualizationColors",
-                    "position": 9
-                  },
-                  {
-                    "themeColorType": "visualizationColors",
-                    "position": 10
-                  }
-                ]
+                "showTitle": true,
+                "title": "Top 5 des stations les moins chères par  zone",
+                "headerAlignment": "center"
               },
               "widgetType": "bar",
               "encodings": {
                 "x": {
                   "fieldName": "agg_classement_stations_moins_cheres__prix",
-                  "displayName": "prix des carburants",
+                  "displayName": "prix du carburant",
                   "scale": {
                     "type": "quantitative"
                   }
                 },
                 "y": {
-                  "fieldName": "agg_classement_stations_moins_cheres__station_id",
+                  "fieldName": "agg_classement_stations_moins_cheres__adresse_station",
+                  "displayName": "adresse   station",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "color": {
+                  "fieldName": "agg_classement_stations_moins_cheres__carburant",
                   "scale": {
                     "type": "categorical"
                   }
@@ -210,13 +346,175 @@
           },
           "position": {
             "x": 0,
+            "y": 8,
+            "width": 12,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "6b38d060",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "monthly(agg_prix_moyen_par_departement_jour__date)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `agg_prix_moyen_par_departement_jour`.`date`)"
+                    },
+                    {
+                      "name": "agg_prix_moyen_par_departement_jour__prix_moyen",
+                      "expression": "`agg_prix_moyen_par_departement_jour`.`prix_moyen`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`agg_prix_moyen_par_departement_jour`.`nom` IN ('SP95')"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"MONTH\", `agg_prix_moyen_par_departement_jour`.`date`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Prix moyen national SP95"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "agg_prix_moyen_par_departement_jour__prix_moyen"
+                },
+                "period": {
+                  "fieldName": "monthly(agg_prix_moyen_par_departement_jour__date)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
             "y": 0,
-            "width": 5,
-            "height": 4
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "a111c58f",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "agg_prix_moyen_par_departement_jour__date",
+                      "expression": "`agg_prix_moyen_par_departement_jour`.`date`"
+                    },
+                    {
+                      "name": "avg(agg_prix_moyen_par_departement_jour__prix_moyen)",
+                      "expression": "AVG(`agg_prix_moyen_par_departement_jour`.`prix_moyen`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "agg_prix_moyen_par_departement_jour__date",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(agg_prix_moyen_par_departement_jour__prix_moyen)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 12,
+            "height": 6
           }
         }
       ],
       "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "46ce46c3",
+      "displayName": "Global Filters",
+      "layout": [
+        {
+          "widget": {
+            "name": "99857fbf",
+            "queries": [
+              {
+                "name": "dashboards/01f196e9597718f58ae8a8a2e990d4d4/datasets/01f196e9597816aabb1966c38712158e_date",
+                "query": {
+                  "datasetName": "82b39806",
+                  "fields": [
+                    {
+                      "name": "date",
+                      "expression": "`date`"
+                    },
+                    {
+                      "name": "date_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "date",
+                    "queryName": "dashboards/01f196e9597718f58ae8a8a2e990d4d4/datasets/01f196e9597816aabb1966c38712158e_date"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
       "layoutVersion": "GRID_V1"
     }
   ],
