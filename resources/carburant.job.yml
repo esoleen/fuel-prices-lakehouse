@@ -64,6 +64,18 @@ resources:
           depends_on: 
             - task_key: 02_load_silver
 
+        - task_key: ou_faire_le_plein
+          dashboard_task:
+            dashboard_id: 01f196e9597718f58ae8a8a2e990d4d4
+            create_time: {{iso_datetime}}
+            update_time: {{iso_datetime}}
+            warehouse_id: b305b486691336df
+          depends_on:
+            - task_key: agg_prix_moyen_par_departement
+            - task_key: agg_evolution_prix
+            - task_key: agg_classement_stations
+            - task_key: agg_taux_rupture_par_region
+
       environments:
         - environment_key: default
           spec:
