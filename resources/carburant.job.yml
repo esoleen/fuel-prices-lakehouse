@@ -6,14 +6,10 @@ resources:
       name: carburant
 
       trigger:
-        # Run this job every day, exactly one day from the last run; see https://docs.databricks.com/api/workspace/jobs/create#trigger
+        # Run this job every day, exactly one day from the last run
         periodic:
           interval: 1
           unit: DAYS
-
-      #email_notifications:
-      #  on_failure:
-      #    - your_email@example.com
 
       parameters:
         - name: catalog
@@ -38,7 +34,7 @@ resources:
             query:
               query_id: 87a7d05a-f674-4145-8bea-87e8597eadf1
           depends_on: 
-          - task_key: 02_load_silver
+            - task_key: 02_load_silver
 
         - task_key: agg_evolution_prix
           sql_task:
@@ -67,9 +63,6 @@ resources:
         - task_key: ou_faire_le_plein
           dashboard_task:
             dashboard_id: 01f196e9597718f58ae8a8a2e990d4d4
-            create_time: {{iso_datetime}}
-            update_time: {{iso_datetime}}
-            warehouse_id: b305b486691336df
           depends_on:
             - task_key: agg_prix_moyen_par_departement
             - task_key: agg_evolution_prix
@@ -80,4 +73,3 @@ resources:
         - environment_key: default
           spec:
             environment_version: "4"
-
