@@ -412,7 +412,7 @@
         },
         {
           "widget": {
-            "name": "a111c58f",
+            "name": "ev",
             "queries": [
               {
                 "name": "main_query",
@@ -433,6 +433,11 @@
             ],
             "spec": {
               "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Evolution du prix moyen de carburant",
+                "headerAlignment": "center"
+              },
               "widgetType": "line",
               "encodings": {
                 "x": {
@@ -443,6 +448,7 @@
                 },
                 "y": {
                   "fieldName": "avg(agg_prix_moyen_par_departement_jour__prix_moyen)",
+                  "displayName": "prix moyen",
                   "scale": {
                     "type": "quantitative"
                   }
