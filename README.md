@@ -15,35 +15,6 @@ Ce projet transforme ce flux brut en un modèle de données prêt pour l'analyse
 ### Source
 - [data.economie.gouv.fr](https://data.economie.gouv.fr/) - Prix des carburants en France, flux instantané V2
 
-## 🏗️ Architecture Médaillon
-
-![Architecture Médaillon](docs/fuel_prices_medaillon_architecture.png)
-
-Le pipeline suit une architecture en médaillon sur 3 couches Delta Lake, orchestrées par un job Databricks (`resources/carburant.job.yml`) :
-- **Bronze** (`fuel_price_etl/notebooks/01_Bronze`) : ingestion historisée des tables brutes (`brze_*` : dim_carburant, dim_geo, dim_station, fait_prix, fait_rupture) avec ajout d'une colonne `date_ingestion` pour tracer chaque chargement.
-- **Silver** (`fuel_price_etl/notebooks/02_Silver`) : nettoyage et fiabilisation des données (`slv_*`) - déduplication par clé métier, désimbrication des colonnes `services`, application des règles de qualité et d'intégrité référentielle (ex. rattachement des stations à un département existant dans `dim_geo`).
-- **Gold** (`fuel_price_etl/sql/03_Gold`) : requêtes SQL d'agrégation (`agg_*.dbquery.ipynb`) exécutées en parallèle après le Silver - prix moyen par département, évolution des prix au niveau national, classement des stations les moins chères, taux de rupture par région.
-- **Dashboard** (`fuel_price_etl/dashboard`) : dashboard Databricks (`Suivi national des prix carburants.lvdash.json`) branché sur les tables Gold, publié dans le job via une tâche `dashboard_task` déclenchée une fois les 4 agrégations terminées.
-
-Le module `src/carburants` (packagé via `pyproject.toml`) fournit les utilitaires Python partagés (`fuel_price_utils.py`), le notebook de contrôle qualité (`00_data_quality.ipynb`) et le point d'entrée `main.py`, montés dans le pipeline DAB (`resources/carburant_etl.pipeline.yml`).
-
-## ✅ Résultat d'exécution du pipeline
-
-![Exécution du job carburant](docs/carburant_run.png)
-
-Le job `carburant` orchestre l'ensemble du pipeline : chargement Bronze (`01_load_bronze`), chargement Silver (`02_load_silver`), les 4 agrégations Gold exécutées en parallèle (`agg_classement_stations`, `agg_evolution_prix`, `agg_prix_moyen`, `agg_taux_rupture`), puis la mise à jour du dashboard (`suivi_national_des_prix_carburants`) une fois ces agrégations terminées.
-
-## 🔄 CI/CD
-
-Le déploiement et l'exécution du pipeline sont automatisés via GitHub Actions : à chaque `git push` sur la branche `dev`, le workflow valide le bundle (`databricks bundle validate`), le déploie sur l'environnement Databricks correspondant, puis déclenche l'exécution du job `carburant`.
-
-```yaml
-on:
-  push:
-    branches:
-      - 'dev'
-```
-
 ## 📁 Architecture du projet
 
 ```
@@ -93,6 +64,45 @@ fuel-prices-lakehouse/
 ├── README.md
 └── .gitignore
 ```
+
+## 🏗️ Architecture Médaillon
+
+![Architecture Médaillon](docs/fuel_prices_medaillon_architecture.png)
+
+Le pipeline suit une architecture en médaillon sur 3 couches Delta Lake, orchestrées par un job Databricks (`resources/carburant.job.yml`) :
+- **Bronze** (`fuel_price_etl/notebooks/01_Bronze`) : ingestion historisée des tables brutes (`brze_*` : dim_carburant, dim_geo, dim_station, fait_prix, fait_rupture) avec ajout d'une colonne `date_ingestion` pour tracer chaque chargement.
+- **Silver** (`fuel_price_etl/notebooks/02_Silver`) : nettoyage et fiabilisation des données (`slv_*`) - déduplication par clé métier, désimbrication des colonnes `services`, application des règles de qualité et d'intégrité référentielle (ex. rattachement des stations à un département existant dans `dim_geo`).
+- **Gold** (`fuel_price_etl/sql/03_Gold`) : requêtes SQL d'agrégation (`agg_*.dbquery.ipynb`) exécutées en parallèle après le Silver - prix moyen par département, évolution des prix au niveau national, classement des stations les moins chères, taux de rupture par région.
+- **Dashboard** (`fuel_price_etl/dashboard`) : dashboard Databricks (`Suivi national des prix carburants.lvdash.json`) branché sur les tables Gold, publié dans le job via une tâche `dashboard_task` déclenchée une fois les 4 agrégations terminées.
+
+Le module `src/carburants` (packagé via `pyproject.toml`) fournit les utilitaires Python partagés (`fuel_price_utils.py`), le notebook de contrôle qualité (`00_data_quality.ipynb`) et le point d'entrée `main.py`, montés dans le pipeline DAB (`resources/carburant_etl.pipeline.yml`).
+
+## 🔄 CI/CD
+
+Le déploiement et l'exécution du pipeline sont automatisés via GitHub Actions : à chaque `git push` sur la branche `dev`, le workflow valide le bundle (`databricks bundle validate`), le déploie sur l'environnement Databricks correspondant, puis déclenche l'exécution du job `carburant`.
+
+```yaml
+on:
+  push:
+    branches:
+      - 'dev'
+```
+## 🔄 Résultat du CI/CD Github Actions
+![Déployement du workflow job_update_cd](docs/CI_CD.png)
+
+le workflow GitHub Actions déclenché sur le push `dev` décrit ci-dessus : validation du bundle (`databricks bundle validate`), déploiement sur l'environnement Databricks, puis exécution du job `carburant`.
+
+## ✅ Résultat d'exécution du pipeline
+
+![Exécution du job carburant](docs/carburant_run.png)
+
+Le job `carburant` orchestre l'ensemble du pipeline : chargement Bronze (`01_load_bronze`), chargement Silver (`02_load_silver`), les 4 agrégations Gold exécutées en parallèle (`agg_classement_stations`, `agg_evolution_prix`, `agg_prix_moyen`, `agg_taux_rupture`), puis la mise à jour du dashboard (`suivi_national_des_prix_carburants`) une fois ces agrégations terminées.
+
+## 📊 Résultat du dashboard
+
+![Suivi national des prix carburants](docs/dashboard_carburant.png)
+
+Le dashboard `Suivi national des prix carburants`, branché sur les tables Gold, expose le prix moyen national, le nombre de stations suivies et le taux de rupture, ainsi que l'évolution du prix moyen par type de carburant (Gazole, SP95, SP98, E10, E85, GPLc) dans le temps. D'autres KPI pourront être ajoutés au fil du temps.
 
 ## ⚙️ Installation
 
