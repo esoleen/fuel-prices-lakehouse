@@ -44,17 +44,17 @@ def get_watermark(spark, control_table, source_table):
     row = (
         spark.read.table(control_table)
         .where(f"table_name = '{source_table}'")
-        .select("last_watermark")
+        .select("date_maj")
         .collect()
     )
-    return row[0]["last_watermark"] if row else None
+    return row[0]["date_maj"] if row else None
 
 
 def update_watermark(spark, control_table, source_table, new_watermark):
     if new_watermark is None:
         return
     new_row = spark.createDataFrame(
-        [(source_table, new_watermark)], schema=["table_name", "last_watermark"]
+        [(source_table, new_watermark)], schema=["table_name", "date_maj"]
     )
     if spark.catalog.tableExists(control_table):
         from delta.tables import DeltaTable
