@@ -14,15 +14,14 @@ resources:
       parameters:
         - name: catalog
           default: ${var.catalog}
-        - name: date_ingestion
-          default: '{{job.start_time.iso_datetime}}'
+          
 
       tasks:
         - task_key: 01_load_bronze
           notebook_task:
             notebook_path: ../fuel_price_etl/notebooks/01_Bronze/01_bronze_fuel_price.ipynb
             base_parameters:
-              date_ingestion: '{{job.parameters.date_ingestion}}'
+              date_ingestion: '{{job.start_time.iso_datetime}}'
               
         - task_key: 02_load_silver
           depends_on:
