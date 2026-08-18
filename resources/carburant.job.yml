@@ -28,7 +28,8 @@ resources:
             - task_key: 01_load_bronze
           notebook_task:
             notebook_path: ../fuel_price_etl/notebooks/02_Silver/02_silver_fuel_price.ipynb
-  
+        
+
         - task_key: agg_prix_moyen_par_departement
           sql_task:
             warehouse_id: b305b486691336df
@@ -69,6 +70,14 @@ resources:
             - task_key: agg_evolution_prix
             - task_key: agg_classement_stations
             - task_key: agg_taux_rupture_par_region
+
+        - task_key: 00_data_quality
+          depends_on:
+            - task_key: 01_load_bronze
+            - task_key: 02_load_silver
+          notebook_task:
+           notebook_path: ../src/carburants/00_data_quality.ipynb
+          run_if: NONE_FAILED
 
       environments:
         - environment_key: default
