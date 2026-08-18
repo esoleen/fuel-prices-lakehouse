@@ -24,6 +24,9 @@ jobs:
       - name: 'Validation du bundle'
         run: databricks bundle validate
 
+      - name: 'Open job on URL'
+        run: databricks bundle open carburant
+
       - name: 'Déploiement du bundle sur dev'
         run: databricks bundle deploy
 
