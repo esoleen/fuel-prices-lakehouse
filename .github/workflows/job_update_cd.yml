@@ -1,5 +1,4 @@
 name: 'Dev deployment'
-run-name: 'Deploy to dev by ${{ github.actor }}'
 
 on:
   push:
